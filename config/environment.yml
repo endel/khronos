@@ -1,0 +1,11 @@
+production:
+  storage: mongodb://localhost:27017/khronos
+  interval: 5
+
+development:
+  storage: mongodb://localhost:27017/khronos_development
+  interval: 1
+
+test:
+  storage: sqlite3://localhost/db/test.db
+  interval: 1
