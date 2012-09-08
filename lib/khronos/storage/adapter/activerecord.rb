@@ -21,8 +21,9 @@ module Khronos
             )
           end
 
-          ::ActiveRecord::Base.logger = ::Logger.new(STDOUT)
-
+          #
+          # ::ActiveRecord::Base.logger = ::Logger.new(STDOUT)
+          #
           self
         end
 

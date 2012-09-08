@@ -1,11 +1,10 @@
 module Khronos
   class Controller
-    attr_reader :scheduler, :runner, :interval
+    attr_reader :storage, :scheduler
 
     def initialize
-      @runner = Runner.new
+      @storage = Storage.new
       @scheduler = Scheduler.new
-      @scheduler.add_observer(@runner)
     end
 
     def logger=(logger)
@@ -14,10 +13,8 @@ module Khronos
 
     def start!
       loop do
-        puts "Tick..."
-
-        if rand(500) == 1
-          puts "I'm so lucky!"
+        @scheduler.fetch(Time.now).each do |schedule|
+          @scheduler.run(schedule)
         end
 
         #

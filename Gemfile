@@ -2,12 +2,15 @@ source :rubygems
 gemspec
 
 group :test do
+  gem 'thin'
+
   gem 'simplecov', '= 0.6.4'
 
   gem 'rspec'
   gem 'rack-test'
   gem "fakefs", "~> 0.4.0"
   gem "delorean", "~> 2.0.0"
+  gem "factory_girl", "~> 4.0.0"
 
   #
   # Used for time functions

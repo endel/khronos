@@ -10,6 +10,7 @@ module Khronos
           field :context,     :type => String
           field :at,          :type => DateTime
           field :recurring,   :type => Integer
+          field :active,      :type => Boolean
 
           has_many :logs, :class_name => ScheduleLog
         end

@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Khronos::Server do
+describe Khronos::Server::Scheduler do
   include Rack::Test::Methods
 
   def app
-    Khronos::Server
+    Khronos::Server::Scheduler
   end
 
   it "shouldn't accept request without context" do
@@ -26,6 +26,12 @@ describe Khronos::Server do
       :recurrency => 5
     })
     last_response.status.should == 200
+  end
+
+  xit "should enqueue schedule to run immediatelly" do
+    post('/run', :id => 1)
+    last_response.status.should == 200
+    JSON.parse(last_response).should == {'queued' => true}
   end
 
 end

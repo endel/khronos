@@ -13,7 +13,6 @@ module Khronos
   autoload :Logger,     'khronos/logger'
 
   autoload :Scheduler,  'khronos/scheduler'
-  autoload :Runner,     'khronos/runner'
   autoload :Controller, 'khronos/controller'
 end
 

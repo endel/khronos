@@ -6,4 +6,5 @@ ENV['RACK_ENV'] ||= 'production'
 require 'readline'
 require 'khronos'
 
-run Khronos::Server
+
+run Khronos::Server::Scheduler

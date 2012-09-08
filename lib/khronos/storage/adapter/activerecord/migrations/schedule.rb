@@ -6,12 +6,15 @@ module Khronos
         class CreateSchedule < ::ActiveRecord::Migration
           def self.up
             create_table :schedules do |t|
-              t.string    :namespace,   :limit => 100, :null => true
-              t.string    :context,     :limit => 100, :null => false
-              t.datetime  :at,                         :null => false
-              t.string    :task_url,                   :null => false
-              t.integer   :recurring,                  :null => false
+              t.string    :context,   :null => false, :limit => 100
+              t.datetime  :at,        :null => false
+              t.string    :task_url,  :null => false
+              t.integer   :recurring, :null => false
+              t.boolean   :active,    :null => false, :default => true
             end
+
+            add_index :schedules, :at
+            add_index :schedules, :context
           end
 
           def self.down

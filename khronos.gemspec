@@ -14,12 +14,14 @@ Gem::Specification.new do |s|
   s.description = "Ruby HTTP Job Scheduler Interface. An advanced Cron replacement for the cloud."
   s.licenses    = ['MIT']
 
-  s.add_dependency "sinatra",       '~> 1.3.3'
-  s.add_dependency 'mongoid',       '~> 3.0.5'
-  s.add_dependency 'bson_ext',      '~> 1.6.4'
-  s.add_dependency 'activerecord',  '~> 3.2.8'
-  s.add_dependency 'json',          '~> 1.7.5'
-  s.add_dependency 'activesupport', '~> 3.2.8'
+  s.add_dependency "sinatra",         "~> 1.3.3"
+  s.add_dependency "mongoid",         "~> 3.0.5"
+  s.add_dependency "bson_ext",        "~> 1.6.4"
+  s.add_dependency "activerecord",    "~> 3.2.8"
+  s.add_dependency "json",            "~> 1.7.5"
+  s.add_dependency "activesupport",   "~> 3.2.8"
+  s.add_dependency "eventmachine",    "~> 1.0.0.beta.4"
+  s.add_dependency "em-http-request", "~> 1.0.3"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
