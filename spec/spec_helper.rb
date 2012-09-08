@@ -13,17 +13,22 @@ require 'bundler/setup'
 require 'active_support/all'
 require 'rack/test'
 require 'delorean'
+require 'webmock/rspec'
 
 require 'rspec'
 require 'khronos'
 
 require 'factory_girl'
-
 def load_factory_girl!
   require File.expand_path('spec/support/factories')
 end
+
+# Support mocks
+require File.expand_path('spec/support/mocks')
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.mock_with :rspec
 end
+
+Dir['spec/tmp/**'].each {|f| File.unlink(f) }

@@ -6,12 +6,51 @@ module Khronos
     class Scheduler < Sinatra::Base
       set :storage, Storage.new
 
-      # Retrieves scheduling data from a context
+      # Creates a schedule
+      #
+      # @param [String]       context     application-level identifier
+      # @param [Integer]      at          timestamp which will run for the first time
+      # @param [Integer]      recurrency  next execution interval, in seconds
+      # @param [String]       task_url    url of the task that will run
+      # @param [String, JSON] callbacks   callback urls (e.g. '{"success" : ... , "error" : ...}')
+      #
+      # @return [Hash] created schedule data
+      post '/task' do
+        Storage::Schedule.create(params).to_json
+      end
+
+      # Retrieves scheduling tasks from a context
+      #
+      # @param [Integer] id
+      # @param [String] context
       #
       # @return [Hash] JSON
-      get '/' do
-        # context = retrieve_context!
-        {}.to_json
+      get '/task' do
+        schedule = (!params.empty?) ? Storage::Schedule.where(params).first : nil
+        if schedule.nil?
+          # Requested task not found
+          404
+        else
+          schedule.to_json
+        end
+      end
+
+      # Retrieve a list of scheduling tasks
+      get '/tasks' do
+        if Storage::Schedule.name =~ /ActiveRecord/
+          criteria = Storage::Schedule
+          params.each_pair do |field, value|
+            if field == 'context'
+              field = "#{field} LIKE ?"
+            else
+              field = "#{field} = ?"
+            end
+            criteria = criteria.where(field, value)
+          end
+          criteria.to_json
+        else
+          Storage::Schedule.where(params).to_json
+        end
       end
 
       # Creates or updates a schedule from a context
@@ -19,23 +58,51 @@ module Khronos
       # @param [String]
       #
       # @return [Hash] Context JSON status hash
-      put '/' do
-        context = retrieve_context!
-        puts params.inspect
-        context.to_json
+      put '/task' do
+        schedule = Storage::Schedule.where({:id => params.delete(:id)}).first
+
+        # No schedule found for this params.
+        return {}.to_json unless schedule
+
+        schedule.update_attributes(params)
+        schedule.save
+
+        schedule.to_json
       end
 
-      post '/run' do
+      # Checks recurrency and reactivates a schedule if necessary
+      #
+      # @param [String] id
+      #
+      # @return [Hash] data
+      patch '/task' do
+        schedule = Storage::Schedule.where(params).first
+
+        # No schedule found for this params.
+        return {}.to_json unless schedule
+
+        # Is recurrency check requested
+        if schedule.recurrency > 0
+          schedule.at += schedule.recurrency
+          schedule.active = true
+        end
+        schedule.save
+
+        schedule.to_json
+      end
+
+      # Force a task to be scheduled right now
+      #
+      # @param [Integer] id
+      #
+      # @return [Hash] queued
+      post '/task/run' do
         schedule = Storage::Schedule.where(:id => params[:id]).first
+        Khronos::Scheduler.run(schedule) if schedule
         {:queued => !schedule.nil?}.to_json
       end
 
-      private
-
-        def retrieve_context!
-          halt 400, "Missing 'context' on query string." unless params[:context]
-          (params[:namespace].nil?) ? params[:context] : "#{params[:namespace]}:#{params[:context]}"
-        end
+      # Log requests
 
     end
 

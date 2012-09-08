@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency "mongoid",         "~> 3.0.5"
   s.add_dependency "bson_ext",        "~> 1.6.4"
   s.add_dependency "activerecord",    "~> 3.2.8"
+  s.add_dependency "squeel",          "~> 1.0.11"
   s.add_dependency "json",            "~> 1.7.5"
   s.add_dependency "activesupport",   "~> 3.2.8"
   s.add_dependency "eventmachine",    "~> 1.0.0.beta.4"

@@ -9,7 +9,8 @@ module Khronos
           field :namespace,   :type => String
           field :context,     :type => String
           field :at,          :type => DateTime
-          field :recurring,   :type => Integer
+          field :recurrency,  :type => Integer
+          field :callbacks,   :type => Hash
           field :active,      :type => Boolean
 
           has_many :logs, :class_name => ScheduleLog

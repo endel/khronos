@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Khronos::Controller do
-  let(:controller) { Khronos::Controller.new }
+describe Khronos::Server::Controller do
+  let(:controller) { Khronos::Server::Controller.new }
 
   it "should retrieve" do
     #controller.

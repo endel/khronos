@@ -1,4 +1,5 @@
 require 'active_record'
+require 'squeel'
 
 module Khronos
   class Storage

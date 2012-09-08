@@ -17,7 +17,7 @@ module Khronos
       #
       # Change logger current adapter's logger
       #
-      puts "WARNING: Storage#logger not implemented."
+      raise NotImplementedMethod
     end
 
     def truncate!

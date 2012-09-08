@@ -13,7 +13,7 @@ describe Khronos::Storage do
         :context => "test:dummy",
         :task_url => "http://some-service.com/task",
         :at => Time.now,
-        :recurring => 1
+        :recurrency => 1.day
       })
       Khronos::Storage::Schedule.last.task_url.should == "http://some-service.com/task"
     end

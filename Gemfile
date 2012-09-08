@@ -3,14 +3,16 @@ gemspec
 
 group :test do
   gem 'thin'
-
   gem 'simplecov', '= 0.6.4'
 
-  gem 'rspec'
-  gem 'rack-test'
+  # Testing
+  gem "rspec", "~> 2.11.0"
+  gem 'rack-test', '~> 0.6.1'
   gem "fakefs", "~> 0.4.0"
   gem "delorean", "~> 2.0.0"
   gem "factory_girl", "~> 4.0.0"
+  gem "webmock", "~> 1.8.9"
+  #gem "em-spec", ''
 
   #
   # Used for time functions
