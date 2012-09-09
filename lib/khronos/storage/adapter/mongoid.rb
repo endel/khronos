@@ -14,7 +14,7 @@ module Khronos
             ::Mongoid.load!("config/mongoid.yml")
           else
             ::Mongoid.configure do |config|
-              config.connect_to uri.host[1..-1]
+              config.connect_to uri[:host][1..-1]
             end
           end
 

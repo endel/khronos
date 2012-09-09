@@ -1,10 +1,9 @@
 module Khronos
   class Storage
     module Adapter
-      @schemes = {
+      @frameworks = {
         'mongodb' => 'mongoid',
-        'postgres' => 'activerecord',
-        'mysql' => 'activerecord',
+        'postgresql' => 'activerecord',
         'mysql2' => 'activerecord',
         'sqlite3' => 'activerecord'
       }
@@ -12,24 +11,32 @@ module Khronos
         'activerecord' => 'ActiveRecord',
         'mongoid' => 'Mongoid'
       }
+      @adapters = {
+        'mongodb' => 'mongoid'
+      }
 
       def self.parse_uri(uri)
         data = URI.parse(uri)
         {
-          :uri => data,
-          :adapter => @schemes[data.scheme],
-          :class_name => @classes[@schemes[data.scheme]]
+          :scheme     => data.scheme,
+          :host       => data.host,
+          :user       => data.user,
+          :password   => data.password,
+          :path       => data.path
         }
       end
 
-      def self.get(uri)
-        data = self.parse_uri(uri)
+      def self.get(url)
+        uri = parse_uri(url)
+        framework = @frameworks[uri[:scheme]]
 
-        require "khronos/storage/adapter/#{data[:adapter]}"
+        require "khronos/storage/adapter/#{framework}"
 
         # Get and connect with the adapter class.
-        adapter = const_get(data[:class_name])
-        adapter.connect!(data[:uri])
+        adapter = const_get(@classes[framework])
+
+        # uri.merge(:adapter => @adapters[uri[:scheme]] || uri[:scheme])
+        adapter.connect!(url)
       end
 
     end

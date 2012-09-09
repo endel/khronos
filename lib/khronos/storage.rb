@@ -5,12 +5,11 @@ module Khronos
     autoload :Adapter, 'khronos/storage/adapter'
 
     def initialize(uri=ENV['KHRONOS_STORAGE'])
-      unless uri.nil?
-        @adapter = Adapter.get(uri)
+      raise RuntimeError.new("Please configure 'KHRONOS_STORAGE' on your environment variables.") if uri.nil?
 
-        self.migrate! if @adapter.name =~ /ActiveRecord/
-        self.class.send(:include, @adapter)
-      end
+      @adapter = Adapter.get(uri)
+      self.migrate! if @adapter.name =~ /ActiveRecord/
+      self.class.send(:include, @adapter)
     end
 
     def logger=(logger)

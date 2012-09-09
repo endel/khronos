@@ -25,4 +25,5 @@ group :test do
   gem 'mongo'
   gem "mysql2", "~> 0.3.11"
   gem 'sqlite3'
+  gem 'pg'
 end
