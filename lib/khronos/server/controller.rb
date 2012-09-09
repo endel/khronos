@@ -5,7 +5,7 @@ module Khronos
 
       def initialize
         @storage = Storage.new
-        @scheduler = Scheduler.new
+        @scheduler = Khronos::Scheduler.new
       end
 
       def logger=(logger)
