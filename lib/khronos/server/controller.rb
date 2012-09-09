@@ -16,7 +16,7 @@ module Khronos
         puts "Check... #{Time.now}"
         count = 0
         @scheduler.fetch(Time.now).each do |schedule|
-          schedule.update_attributes(:status => false)
+          schedule.update_attributes(:active => false)
           schedule.save
 
           @scheduler.run(schedule)
