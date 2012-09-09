@@ -11,6 +11,7 @@ module Khronos
       end
 
       def receive_data json
+        puts "Receive data to run: #{json}"
         schedule = JSON.parse(json)
         send_data ">>> you sent: #{schedule.inspect}"
 

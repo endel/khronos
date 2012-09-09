@@ -6,7 +6,6 @@ module Khronos
         class Schedule
           include ::Mongoid::Document
 
-          field :namespace,   :type => String
           field :context,     :type => String
           field :at,          :type => DateTime
           field :recurrency,  :type => Integer

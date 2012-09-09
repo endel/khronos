@@ -6,6 +6,24 @@ module Khronos
     class Scheduler < Sinatra::Base
       set :storage, Storage.new
 
+      # Introduction
+      get '/' do
+        <<-EOF
+        <html>
+          <head>
+            <title>Khronos #{Khronos::VERSION}</title>
+          </head>
+          <body>
+            <h1>HTTP Job Scheduler Interface.</h1>
+            <p>
+              <a href="http://rubygems.org/gems/khronos">Khronos #{Khronos::VERSION}</a><br />
+              by <a href="https://github.com/endel">Endel Dreyer</a>
+            </p>
+          </body>
+        </html>
+        EOF
+      end
+
       # Creates a schedule
       #
       # @param [String]       context     application-level identifier
@@ -59,7 +77,7 @@ module Khronos
       #
       # @return [Hash] Context JSON status hash
       put '/task' do
-        schedule = Storage::Schedule.where({:id => params.delete(:id)}).first
+        schedule = Storage::Schedule.where({:id => params.delete('id')}).first
 
         # No schedule found for this params.
         return {}.to_json unless schedule
