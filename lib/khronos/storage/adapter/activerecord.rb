@@ -1,4 +1,3 @@
-require 'active_record'
 
 module Khronos
   class Storage
@@ -9,7 +8,8 @@ module Khronos
         autoload :ScheduleLog,  'khronos/storage/adapter/activerecord/schedule_log'
 
         def self.connect!(url)
-          puts "Connect! => #{url.inspect}"
+          require 'active_record'
+
           if File.exists?("config/database.yml")
             ::ActiveRecord::Base.establish_connection(YAML.load_file("config/database.yml")[ENV['RACK_ENV']])
           else

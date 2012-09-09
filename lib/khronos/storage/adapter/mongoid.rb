@@ -1,6 +1,3 @@
-require 'mongoid'
-require 'mongo'
-
 module Khronos
   class Storage
     module Adapter
@@ -10,6 +7,9 @@ module Khronos
         autoload :ScheduleLog,  'khronos/storage/adapter/mongoid/schedule_log'
 
         def self.connect!(uri)
+          require 'mongo'
+          require 'mongoid'
+
           if File.exists?("config/mongoid.yml")
             ::Mongoid.load!("config/mongoid.yml")
           else
