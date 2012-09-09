@@ -12,13 +12,22 @@ module Khronos
         puts "WARNING: Not implemented yet."
       end
 
+      def check_schedule!
+        puts "Check... #{Time.now}"
+        count = 0
+        @scheduler.fetch(Time.now).each do |schedule|
+          schedule.update_attributes(:status => false)
+          schedule.save
+
+          @scheduler.run(schedule)
+          count += 1
+        end
+        puts "Tick. #{count} jobs to run."
+      end
+
       def start!
         loop do
-          @scheduler.fetch(Time.now).each do |schedule|
-            schedule.update_attributes(:status => false)
-            schedule.save
-            @scheduler.run(schedule)
-          end
+          check_schedule!
 
           #
           # Sleep 'interval' seconds
