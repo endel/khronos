@@ -11,6 +11,8 @@ module Khronos
 
   autoload :Storage,    'khronos/storage'
   autoload :Server,     'khronos/server'
+
+  autoload :VERSION,    'khronos/version'
 end
 
 Khronos::Logger.setup!(Logger.new(STDOUT))
