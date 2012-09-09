@@ -14,4 +14,3 @@ module Khronos
 end
 
 Khronos::Logger.setup!(Logger.new(STDOUT))
-Khronos::Config.instance.load!('config/environment.yml', ENV['RACK_ENV'])

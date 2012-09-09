@@ -10,11 +10,11 @@ module Khronos
         def self.connect!(url)
           require 'active_record'
 
-          if File.exists?("config/database.yml")
-            ::ActiveRecord::Base.establish_connection(YAML.load_file("config/database.yml")[ENV['RACK_ENV']])
-          else
+          #if File.exists?("config/database.yml")
+            #::ActiveRecord::Base.establish_connection(YAML.load_file("config/database.yml")[ENV['RACK_ENV']])
+          #else
             ::ActiveRecord::Base.establish_connection(url)
-          end
+          #end
 
           #
           # ::ActiveRecord::Base.logger = ::Logger.new(STDOUT)

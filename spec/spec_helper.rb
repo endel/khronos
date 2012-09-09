@@ -18,6 +18,8 @@ require 'webmock/rspec'
 require 'rspec'
 require 'khronos'
 
+Khronos::Config.instance.load!('config/environment.yml', ENV['RACK_ENV'])
+
 require 'factory_girl'
 def load_factory_girl!
   require File.expand_path('spec/support/factories')
