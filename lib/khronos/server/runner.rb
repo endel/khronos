@@ -31,7 +31,7 @@ module Khronos
           rescue Exception => e
             puts "Callback: error. (#{e.inspect})"
           end
-          calculate_recurrency!(schedule)
+          calculate_recurrency!(schedule) if schedule['recurrency'].to_i > 0
         end
       end
 

@@ -8,7 +8,7 @@ module Khronos
       puts "Khronos::Scheduler#run => #{schedule.inspect}"
       schedule.update_attributes(:active => false)
       schedule.save
-      runner.enqueue(schedule)
+      runner.enqueue(schedule) if runner
     end
 
     def self.fetch(target_time=Time.now)

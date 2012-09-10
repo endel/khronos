@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Khronos::Scheduler do
   subject { Khronos::Scheduler }
-  let(:scheduler) { subject.new }
+  let(:scheduler) { subject }
 
   before(:all) do
     ENV['KHRONOS_STORAGE'] = 'sqlite3://localhost/spec/tmp/scheduler.db'

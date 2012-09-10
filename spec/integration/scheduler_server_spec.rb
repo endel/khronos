@@ -44,7 +44,7 @@ describe Khronos::Server::Scheduler do
       :active => false,
       :recurrency => 1.day
     })
-    request('/task', :method => 'PATCH', :params => {:id => dummy_schedule.id})
+    request('/task', :method => 'PUT', :params => {:id => dummy_schedule.id, :patch => true})
     schedule = Khronos::Storage::Schedule.find(dummy_schedule.id)
     schedule.active.should == true
     schedule.at.to_i.should == 1.day.from_now.to_i
