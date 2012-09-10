@@ -31,11 +31,23 @@ describe Khronos::Server::Scheduler do
   end
 
   it "should enqueue schedule to run immediatelly" do
-    mock_tcp_next_request("")
     dummy_schedule = FactoryGirl.create(:schedule)
     post('/task/run', :id => dummy_schedule.id)
     last_response.status.should == 200
     JSON.parse(last_response.body).should == {'queued' => true}
+  end
+
+  it "should update schedule data" do
+    dummy_schedule = FactoryGirl.create(:schedule, {
+      :context => "will be updated",
+      :at => Time.now,
+      :active => true,
+      :recurrency => 0
+    })
+    request('/task', :method => 'PUT', :params => {:id => dummy_schedule.id, :context => "updated"})
+    schedule = Khronos::Storage::Schedule.find(dummy_schedule.id)
+    schedule.active.should == true
+    schedule.context.should == 'updated'
   end
 
   it "should update recurring time" do

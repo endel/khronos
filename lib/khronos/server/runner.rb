@@ -16,7 +16,6 @@ module Khronos
       end
 
       def enqueue(schedule)
-        puts "Khronos::Server::Runner#enqueue => #{schedule.inspect}"
         @queue.push(schedule.to_json)
       end
 
