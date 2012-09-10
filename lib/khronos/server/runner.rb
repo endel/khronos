@@ -39,7 +39,7 @@ module Khronos
         url = "http://#{Config.instance.scheduler['host']}"
         url += ":#{Config.instance.scheduler['port']}" if Config.instance.scheduler['port']
         url += "/task"
-        RestClient.patch(url, :id => schedule['id'])
+        RestClient.put(url, :id => schedule['id'], :patch => true)
       end
 
     end

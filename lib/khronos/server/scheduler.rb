@@ -82,7 +82,16 @@ module Khronos
         # No schedule found for this params.
         return {}.to_json unless schedule
 
-        schedule.update_attributes(params)
+        if params['patch']
+          # When recurrency check requested
+          if schedule.recurrency > 0
+            schedule.at += schedule.recurrency
+            schedule.active = true
+          end
+        else
+          # When put requested
+          schedule.update_attributes(params)
+        end
         schedule.save
 
         schedule.to_json
@@ -94,19 +103,6 @@ module Khronos
       #
       # @return [Hash] data
       patch '/task' do
-        schedule = Storage::Schedule.where(params).first
-
-        # No schedule found for this params.
-        return {}.to_json unless schedule
-
-        # Is recurrency check requested
-        if schedule.recurrency > 0
-          schedule.at += schedule.recurrency
-          schedule.active = true
-        end
-        schedule.save
-
-        schedule.to_json
       end
 
       # Force a task to be scheduled right now
