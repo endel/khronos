@@ -1,51 +1,49 @@
+require 'rest-client'
 require 'json'
-require 'eventmachine'
-require 'em-http'
+require 'girl_friday'
 
 module Khronos
   module Server
 
-    class Runner < EventMachine::Connection
-      def post_init
-        puts "-- someone connected to the server!"
+    class Runner < GirlFriday::WorkQueue
+      attr_reader :queue
+
+      def initialize(*args)
+        @queue = self
+        super(*args) do |schedule|
+          self.process(schedule)
+        end
       end
 
-      def receive_data json
-        puts "Receive data to run: #{json}"
-        schedule = JSON.parse(json)
-        send_data ">>> you sent: #{schedule.inspect}"
+      def enqueue(schedule)
+        puts "Khronos::Server::Runner#enqueue => #{schedule.inspect}"
+        @queue.push(schedule.to_json)
+      end
 
-        # Close connection with client immediatelly
-        close_connection
+      def process(json)
+        schedule = JSON.parse(json)
+        puts "Khronos::Server::Runner#process => #{schedule.inspect}"
 
         if (url = schedule['task_url'])
-          http = EventMachine::HttpRequest.new(url).get :redirects => 5
-          http.callback do
-            puts "#{url}\n#{http.response_header.status} - #{http.response.length} bytes\n"
-            puts http.response
+          begin
+            response = RestClient.get(url)
+            puts "Callback: success. response length: #{response.length.inspect}"
+          rescue Exception => e
+            puts "Callback: error. (#{e.inspect})"
           end
-
-          http.errback do
-            puts "#{url}\n" + http.error
-          end
-
-          enqueue_recurrency!(schedule)
+          calculate_recurrency!(schedule)
         end
-
       end
 
-      def enqueue_recurrency!(schedule)
+      def calculate_recurrency!(schedule)
         url = "http://#{Config.instance.scheduler['host']}"
         url += ":#{Config.instance.scheduler['port']}" if Config.instance.scheduler['port']
-        url += "/task?id=#{schedule['id']}"
-        EventMachine::HttpRequest.new(url).patch :redirects => 2
-      end
-
-      def unbind
-        puts "-- someone disconnected from the echo server!"
+        url += "/task"
+        RestClient.patch(url, :id => schedule['id'])
       end
 
     end
 
   end
 end
+

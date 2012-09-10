@@ -1,11 +1,11 @@
 module Khronos
   module Server
     class Controller
-      attr_reader :storage, :scheduler
+      attr_reader :storage
 
-      def initialize
+      def initialize(runner=nil)
         @storage = Storage.new
-        @scheduler = Khronos::Scheduler.new
+        @runner = runner
       end
 
       def logger=(logger)
@@ -13,13 +13,10 @@ module Khronos
       end
 
       def check_schedule!
-        puts "Check... #{Time.now}"
+        puts "Checking... #{Time.now}"
         count = 0
-        @scheduler.fetch(Time.now).each do |schedule|
-          schedule.update_attributes(:active => false)
-          schedule.save
-
-          @scheduler.run(schedule)
+        Khronos::Scheduler.fetch(Time.now).each do |schedule|
+          Khronos::Scheduler.run(schedule, @runner)
           count += 1
         end
         puts "Tick. #{count} jobs to run."

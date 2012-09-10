@@ -22,6 +22,8 @@ Gem::Specification.new do |s|
   s.add_dependency "activesupport",   "~> 3.2.8"
   s.add_dependency "eventmachine",    "~> 1.0.0.beta.4"
   s.add_dependency "em-http-request", "~> 1.0.3"
+  s.add_dependency "rest-client",     "~> 1.6.7"
+  s.add_dependency "girl_friday",     "~> 0.10.0"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

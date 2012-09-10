@@ -3,24 +3,18 @@ require 'json'
 
 module Khronos
   class Scheduler
-    module Methods
-      def run(schedule)
-        client = TCPSocket.new( Config.instance.runner['host'], Config.instance.runner['port'] )
-        client.puts( schedule.to_json )
 
-        while !(client.closed?) && (message = client.gets)
-          puts message.inspect
-          client.close
-        end
-      end
-
-      def fetch(target_time=Time.now)
-        Storage::Schedule.where(['at <= ?', target_time]).where(:active => true)
-      end
+    def self.run(schedule, runner=nil)
+      puts "Khronos::Scheduler#run => #{schedule.inspect}"
+      schedule.update_attributes(:active => false)
+      schedule.save
+      runner.enqueue(schedule)
     end
 
-    include Methods
-    extend Methods
+    def self.fetch(target_time=Time.now)
+      Storage::Schedule.where(['at <= ?', target_time]).where(:active => true)
+    end
+
   end
 end
 
