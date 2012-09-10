@@ -85,7 +85,7 @@ module Khronos
         if params['patch']
           # When recurrency check requested
           if schedule.recurrency > 0
-            schedule.at += schedule.recurrency
+            schedule.at = (Time.now + schedule.recurrency)
             schedule.active = true
           end
         else
