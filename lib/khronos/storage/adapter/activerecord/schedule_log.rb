@@ -4,7 +4,7 @@ module Khronos
 
       module ActiveRecord
         class ScheduleLog < ::ActiveRecord::Base
-          attr_accessible :schedule_id, :started_at, :finished_at
+          attr_accessible :schedule_id, :started_at, :status_code
           belongs_to :schedule
         end
       end

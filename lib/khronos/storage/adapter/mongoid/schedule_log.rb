@@ -7,7 +7,8 @@ module Khronos
           include ::Mongoid::Document
 
           field :started_at,  :type => DateTime
-          field :finished_at, :type => DateTime
+          field :status_code, :type => Integer
+          field :callbacks,   :type => String
 
           belongs_to :schedule
         end

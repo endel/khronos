@@ -5,23 +5,16 @@ module Khronos
 
     class Scheduler < Sinatra::Base
       set :storage, Storage.new
+      before { content_type 'application/json' }
 
-      # Introduction
+      # Greetings
+      #
       get '/' do
-        <<-EOF
-        <html>
-          <head>
-            <title>Khronos #{Khronos::VERSION}</title>
-          </head>
-          <body>
-            <h1>HTTP Job Scheduler Interface.</h1>
-            <p>
-              <a href="http://rubygems.org/gems/khronos">Khronos #{Khronos::VERSION}</a><br />
-              by <a href="https://github.com/endel">Endel Dreyer</a>
-            </p>
-          </body>
-        </html>
-        EOF
+        {
+          :name => "Khronos - HTTP Job Scheduler Interface.",
+          :version => Khronos::VERSION,
+          :link => "https://github.com/endel/khronos"
+        }
       end
 
       # Creates a schedule
@@ -97,14 +90,6 @@ module Khronos
         schedule.to_json
       end
 
-      # Checks recurrency and reactivates a schedule if necessary
-      #
-      # @param [String] id
-      #
-      # @return [Hash] data
-      patch '/task' do
-      end
-
       # Force a task to be scheduled right now
       #
       # @param [Integer] id
@@ -116,7 +101,31 @@ module Khronos
         {:queued => !schedule.nil?}.to_json
       end
 
-      # Log requests
+      # Schedule logs querying interface
+      #
+      # @param [Integer] started_at
+      # @param [Integer] schedule_id
+      # @param [Integer] status_code
+      #
+      # @return [Array] list of schedule logs
+      #
+      get '/schedule/logs' do
+        limit = params.delete('limit')
+        offset = params.delete('offset')
+
+        relation = Storage::ScheduleLog.where(params)
+        relation = relation.limit(limit) if limit
+        relation = relation.offset(offset) if offset
+        relation.to_json
+      end
+
+      # Create a schedule log
+      #
+      # @param [Integer] started_at
+      # @param [Integer] status_code
+      post '/schedule/log' do
+        Storage::ScheduleLog.create(params).to_json
+      end
 
     end
 

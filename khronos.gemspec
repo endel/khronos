@@ -7,11 +7,11 @@ Gem::Specification.new do |s|
   s.version     = Khronos::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Endel Dreyer"]
-  s.email       = ["endel@ocapi.com.br"]
-  s.homepage    = "http://github.com/ocapi/khronos"
+  s.email       = ["endel.dreyer@gmail.com"]
+  s.homepage    = "http://github.com/endel/khronos"
 
-  s.summary     = "Ruby HTTP Job Scheduler Interface."
-  s.description = "Ruby HTTP Job Scheduler Interface. An advanced Cron replacement for the cloud."
+  s.summary     = "HTTP-based Job Scheduler."
+  s.description = "HTTP-based Job Scheduler. An advanced Cron replacement for the cloud."
   s.licenses    = ['MIT']
 
   s.add_dependency "sinatra",         "~> 1.3.3"

@@ -1,3 +1,3 @@
 module Khronos
-  VERSION = '0.0.3.pre4'
+  VERSION = '0.1.0'
 end

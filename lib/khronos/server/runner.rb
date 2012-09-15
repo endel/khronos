@@ -21,25 +21,35 @@ module Khronos
 
       def process(json)
         schedule = JSON.parse(json)
-        puts "Khronos::Server::Runner#process => #{schedule.inspect}"
+        schedule_log = { :started_at => Time.now, :schedule_id => schedule['id'] }
 
-        if (url = schedule['task_url'])
-          begin
-            response = RestClient.get(url)
-            puts "Callback: success. response length: #{response.length.inspect}"
-          rescue Exception => e
-            puts "Callback: error. (#{e.inspect})"
-          end
-          calculate_recurrency!(schedule) if schedule['recurrency'].to_i > 0
-        end
+        response = RestClient.get(schedule['task_url'])
+        schedule_log[:status_code] = response.code
+
+      rescue RestClient::Exception => e
+        schedule_log[:status_code] = e.http_code
+
+      ensure
+        log_schedule!(schedule_log)
+        calculate_recurrency!(schedule) if schedule['recurrency'].to_i > 0
       end
 
       def calculate_recurrency!(schedule)
-        url = "http://#{Config.instance.scheduler['host']}"
-        url += ":#{Config.instance.scheduler['port']}" if Config.instance.scheduler['port']
-        url += "/task"
-        RestClient.put(url, :id => schedule['id'], :patch => true)
+        RestClient.put(scheduler_route('/task'), :id => schedule['id'], :patch => true)
       end
+
+      def log_schedule!(schedule_log)
+        puts "Log schedule! #{schedule_log.inspect}"
+        RestClient.post( scheduler_route('/schedule/log'), schedule_log )
+      end
+
+      protected
+
+        def scheduler_route(route)
+          url = "http://#{Config.instance.scheduler['host']}"
+          url += ":#{Config.instance.scheduler['port']}" if Config.instance.scheduler['port']
+          url += route
+        end
 
     end
 

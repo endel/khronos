@@ -12,7 +12,7 @@ group :test do
   gem "delorean", "~> 2.0.0"
   gem "factory_girl", "~> 4.0.0"
   gem "webmock", "~> 1.8.9"
-  #gem "em-spec", ''
+  gem "database_cleaner"
 
   #
   # Used for time functions

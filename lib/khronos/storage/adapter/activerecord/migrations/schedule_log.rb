@@ -8,7 +8,8 @@ module Khronos
             create_table :schedule_logs do |t|
               t.integer  :schedule_id,   :null => false
               t.datetime :started_at,    :null => false
-              t.datetime :finished_at,   :null => true
+              t.integer  :status_code,   :null => false
+              t.string   :callbacks
             end
           end
 
