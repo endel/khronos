@@ -17,7 +17,9 @@ require 'webmock/rspec'
 
 require 'rspec'
 require 'khronos'
+require 'fileutils'
 
+FileUtils.mkdir_p('spec/tmp')
 Khronos::Config.instance.load!('config/environment.yml', ENV['RACK_ENV'])
 
 require 'factory_girl'
