@@ -5,7 +5,6 @@ module Khronos
   class Scheduler
 
     def self.run(schedule, runner=nil)
-      puts "Khronos::Scheduler#run => #{schedule.inspect}"
       schedule.update_attributes(:active => false)
       schedule.save
       runner.enqueue(schedule) if runner

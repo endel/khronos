@@ -14,7 +14,7 @@ module Khronos
           :name => "Khronos - HTTP Job Scheduler Interface.",
           :version => Khronos::VERSION,
           :link => "https://github.com/endel/khronos"
-        }
+        }.to_json
       end
 
       # Creates a schedule
@@ -88,6 +88,21 @@ module Khronos
         schedule.save
 
         schedule.to_json
+      end
+
+      # Delete a single task by params
+      #
+      # @param [String] context
+      # @param [String] context
+      #
+      # @return [Hash]
+      delete '/task' do
+        if params.empty?
+          return 403, "Too open query. Use '?all=1' to delete all entries."
+        elsif params['all']
+          params = {}
+        end
+        { :deleted => Storage::Schedule.where(params).delete_all }.to_json
       end
 
       # Force a task to be scheduled right now

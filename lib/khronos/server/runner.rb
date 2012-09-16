@@ -39,7 +39,6 @@ module Khronos
       end
 
       def log_schedule!(schedule_log)
-        puts "Log schedule! #{schedule_log.inspect}"
         RestClient.post( scheduler_route('/schedule/log'), schedule_log )
       end
 

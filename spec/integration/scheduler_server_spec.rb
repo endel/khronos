@@ -72,6 +72,17 @@ describe Khronos::Server::Scheduler do
       schedule.at.to_i.should == 1.day.from_now.to_i
     end
 
+    it "should delete a scheduled task" do
+      schedule = FactoryGirl.create(:schedule, {:context => "to-delete"})
+      delete('/task', :id => schedule.id)
+      Khronos::Storage::Schedule.where(:id => schedule.id).length.should == 0
+
+      schedule = FactoryGirl.create(:schedule)
+      delete('/task')
+      last_response.status.should == 403
+      last_response.body.should include("Too open")
+    end
+
     it "should retrieve a list of schedules by context pattern" do
       FactoryGirl.create(:schedule, {:context => "namespaced"})
       FactoryGirl.create(:schedule, {:context => "namespaced:1"})
@@ -123,10 +134,9 @@ describe Khronos::Server::Scheduler do
       get('/schedule/logs', {:status_code => 200, :limit => 1})
       JSON.parse(last_response.body).length.should == 1
 
-      get('/schedule/logs', {:status_code => 500})
-      puts "status_code => #{last_response.body.inspect}"
-      #logs = JSON.parse(last_response.body)
-      #logs.first['schedule_id'].should == 2
+      get('/schedule/logs', {:status_code => 500, :offset => 1})
+      logs = JSON.parse(last_response.body)
+      logs.first['schedule_id'].should == 2
     end
   end
 
