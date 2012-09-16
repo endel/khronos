@@ -1,4 +1,4 @@
-khronos
+khronos [![Build Status](https://secure.travis-ci.org/endel/khronos.png)](http://travis-ci.org/endel/khronos)
 ===
 
 Simple HTTP-based Job scheduling for the cloud.
