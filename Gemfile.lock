@@ -63,6 +63,7 @@ GEM
       rack
     rack-test (0.6.1)
       rack (>= 1.0)
+    rake (0.9.2.2)
     rest-client (1.6.8)
       mime-types (>= 1.16)
       netrc
@@ -107,8 +108,10 @@ DEPENDENCIES
   mongo
   mongoid (~> 3.0.5)
   mysql2 (~> 0.3.11)
+  netrc (= 0.7.7)
   pg
   rack-test (~> 0.6.1)
+  rake
   rspec (~> 2.11.0)
   simplecov (= 0.6.4)
   sqlite3

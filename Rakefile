@@ -1,36 +1,20 @@
 $: << 'lib'
 
+require 'rake'
 require 'bundler/setup'
 
 ENV['RACK_ENV'] = ENV['ENV'] || 'test'
 require 'khronos'
 
-def load_migrations!
-  require 'khronos/storage/adapter/activerecord/migrations/schedule'
-  require 'khronos/storage/adapter/activerecord/migrations/schedule_log'
+require "rspec/core/rake_task"
+
+desc "Run all specs"
+task :spec => ["spec:all"]
+
+desc "Run unit specs"
+RSpec::Core::RakeTask.new(:'spec:all') do |t|
+  t.rspec_opts = ['--colour']
+  t.pattern = 'spec/**/*_spec.rb'
 end
 
-namespace :db do
-
-  desc 'Create the database.'
-  task :create do
-    adapter = Khronos::Storage::Adapter.get(ENV['KHRONOS_STORAGE'])
-    if adapter.name =~ /ActiveRecord/
-      load_migrations!
-      CreateSchedule.up
-      CreateScheduleLog.up
-    end
-  end
-
-  desc 'Destroy entire database.'
-  task :drop do
-    adapter = Khronos::Storage::Adapter.get(ENV['KHRONOS_STORAGE'])
-    if adapter.name =~ /ActiveRecord/
-      load_migrations!
-      CreateSchedule.down
-      CreateScheduleLog.down
-    end
-  end
-
-end
-
+task :default => :spec

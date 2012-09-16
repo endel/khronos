@@ -1,6 +1,8 @@
 source :rubygems
 gemspec
 
+gem 'rake'
+
 group :test do
   gem 'thin'
   gem 'simplecov', '= 0.6.4'
@@ -13,6 +15,7 @@ group :test do
   gem "factory_girl", "~> 4.0.0"
   gem "webmock", "~> 1.8.9"
   gem "database_cleaner"
+  gem 'netrc', '= 0.7.7'
 
   #
   # Used for time functions
