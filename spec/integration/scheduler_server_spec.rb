@@ -98,6 +98,10 @@ describe Khronos::Server::Scheduler do
       get('/tasks', {:context => "namespaced"})
       last_response.status.should == 200
       JSON.parse(last_response.body).length.should == 1
+
+      get('/tasks', {})
+      last_response.status.should == 200
+      JSON.parse(last_response.body).length.should == Khronos::Storage::Schedule.count
     end
   end
 

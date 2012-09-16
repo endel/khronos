@@ -49,7 +49,7 @@ module Khronos
       # Retrieve a list of scheduling tasks
       get '/tasks' do
         if Storage::Schedule.name =~ /ActiveRecord/
-          criteria = Storage::Schedule
+          criteria = Storage::Schedule.where({})
           params.each_pair do |field, value|
             if field == 'context'
               field = "#{field} LIKE ?"
