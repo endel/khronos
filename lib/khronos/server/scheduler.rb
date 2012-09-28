@@ -111,9 +111,8 @@ module Khronos
       #
       # @return [Hash] queued
       post '/task/run' do
-        schedule = Storage::Schedule.where(:id => params[:id]).first
-        Khronos::Scheduler.run(schedule) if schedule
-        {:queued => !schedule.nil?}.to_json
+        schedule = Storage::Schedule.where(:id => params[:id]).update_all(:at => Time.now)
+        {:queued => schedule}.to_json
       end
 
       # Schedule logs querying interface

@@ -44,7 +44,7 @@ describe Khronos::Server::Scheduler do
       dummy_schedule = FactoryGirl.create(:schedule)
       post('/task/run', :id => dummy_schedule.id)
       last_response.status.should == 200
-      JSON.parse(last_response.body).should == {'queued' => true}
+      JSON.parse(last_response.body).should == {'queued' => 1}
     end
 
     it "should update schedule data" do

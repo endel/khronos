@@ -10,25 +10,33 @@ module Khronos
         def self.connect!(url)
           require 'active_record'
 
-          #if File.exists?("config/database.yml")
-            #::ActiveRecord::Base.establish_connection(YAML.load_file("config/database.yml")[ENV['RACK_ENV']])
-          #else
-            ::ActiveRecord::Base.establish_connection(url)
-            ::ActiveRecord::Base.include_root_in_json = false
-          #end
-
-          #
-          # ::ActiveRecord::Base.logger = ::Logger.new(STDOUT)
-          #
+          ::ActiveRecord::Base.establish_connection(url)
+          ::ActiveRecord::Base.include_root_in_json = false
           self
         end
 
         def self.included(base)
-          #puts "included in #{base}"
+          self.migrate!
         end
 
-        def self.extended(base)
-          #puts "extended in #{base.inspect}"
+
+        protected
+
+        def self.migrate!
+          require 'khronos/storage/adapter/activerecord/migrations/schedule'
+          require 'khronos/storage/adapter/activerecord/migrations/schedule_log'
+
+          unless ::ActiveRecord::Base.connection.table_exists?(:schedules)
+            ActiveRecord::CreateSchedule.up
+          else
+            Logger.debug "Schedules table already exists."
+          end
+
+          unless ::ActiveRecord::Base.connection.table_exists?(:schedule_logs)
+            ActiveRecord::CreateScheduleLog.up
+          else
+            Logger.debug "ScheduleLog table already exists."
+          end
         end
 
       end

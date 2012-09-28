@@ -8,7 +8,6 @@ module Khronos
       raise RuntimeError.new("Please configure 'KHRONOS_STORAGE' on your environment variables.") if uri.nil?
 
       @adapter = Adapter.get(uri)
-      self.migrate! if @adapter.name =~ /ActiveRecord/
       self.class.send(:include, @adapter)
     end
 
@@ -23,25 +22,6 @@ module Khronos
       Schedule.delete_all
       ScheduleLog.delete_all
     end
-
-    protected
-
-      def migrate!
-        require 'khronos/storage/adapter/activerecord/migrations/schedule'
-        require 'khronos/storage/adapter/activerecord/migrations/schedule_log'
-
-        unless ActiveRecord::Base.connection.table_exists?(:schedules)
-          Adapter::ActiveRecord::CreateSchedule.up
-        else
-          Logger.debug "Schedules table already exists."
-        end
-
-        unless ActiveRecord::Base.connection.table_exists?(:schedule_logs)
-          Adapter::ActiveRecord::CreateScheduleLog.up
-        else
-          Logger.debug "ScheduleLog table already exists."
-        end
-      end
 
   end
 end

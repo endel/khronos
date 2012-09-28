@@ -29,14 +29,10 @@ module Khronos
       def self.get(url)
         uri = parse_uri(url)
         framework = @frameworks[uri[:scheme]]
-
         require "khronos/storage/adapter/#{framework}"
 
         # Get and connect with the adapter class.
-        adapter = const_get(@classes[framework])
-
-        # uri.merge(:adapter => @adapters[uri[:scheme]] || uri[:scheme])
-        adapter.connect!(url)
+        const_get(@classes[framework]).connect!(url)
       end
 
     end

@@ -15,10 +15,12 @@ module Khronos
       def check_schedule!
         puts "Checking... #{Time.now}"
         count = 0
-        Khronos::Scheduler.fetch(Time.now).each do |schedule|
-          Khronos::Scheduler.run(schedule, @runner)
+
+        Storage::Schedule.fetch(Time.now).each do |schedule|
+          @runner.enqueue(schedule)
           count += 1
         end
+
         puts "Tick. #{count} jobs to run."
       end
 

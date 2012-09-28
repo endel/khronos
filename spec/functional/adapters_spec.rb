@@ -31,7 +31,7 @@ describe Khronos::Storage do
       Khronos::Storage::Schedule.last.task_url.should == "http://some-service.com/task"
     end
 
-    it "should identify activerecord adapter for sqlite3" do
+    xit "should identify activerecord adapter for sqlite3" do
       client = subject.new('sqlite3://localhost/spec/tmp/sqlite3.db')
       Khronos::Storage::Schedule.should == Khronos::Storage::Adapter::ActiveRecord::Schedule
       Khronos::Storage::ScheduleLog.should == Khronos::Storage::Adapter::ActiveRecord::ScheduleLog
