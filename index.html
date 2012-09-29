@@ -4,54 +4,40 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Khronos by endel</title>
+
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
   <body>
-
+    <div class="wrapper">
       <header>
         <h1>Khronos</h1>
         <p>Simple HTTP-based Job scheduling for the cloud.</p>
+
+        <p class="view"><a href="https://github.com/endel/khronos">View the Project on GitHub <small>endel/khronos</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/endel/khronos/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/endel/khronos/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/endel/khronos">View On <strong>GitHub</strong></a></li>
+        </ul>
       </header>
-
-      <div id="banner">
-        <span id="logo"></span>
-
-        <a href="https://github.com/endel/khronos" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/endel/khronos/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/endel/khronos/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
-      </div><!-- end banner -->
-
-    <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
       <section>
-        <h1>khronos</h1>
-
-<p>Simple HTTP-based Job scheduling for the cloud.</p>
-
-<h2>Features</h2>
+        <h2>Features</h2>
 
 <ul>
 <li>Schedule of HTTP Requests</li>
 <li>Configure recurrency per request</li>
 <li>Log HTTP status code for every request made</li>
 <li>Query the database via REST API</li>
-<li>Postgresql, MySQL and SQLite supported. (mongodb will be supported soon)</li>
-</ul><h2>How it works</h2>
+</ul><p>Currently only PostgreSQL is supported. Patches for other databases are welcome.</p>
+
+<h2>How it works</h2>
 
 <p>Khronos use a rack app to schedule and query for scheduled tasks, and a worker
 process to execute them in the background.</p>
@@ -68,27 +54,27 @@ process to execute them in the background.</p>
   :task_url =&gt; "http://myapp.com/do-something-awesome",
   :recurrency =&gt; 12.hours
 })
-# =&gt; "{\"active\":true,\"at\":\"2012-09-15T21:24:56-03:00\",\"context\":\"test\",\"id\":1,\"recurrency\":1,\"task_url\":\"http://myapp.com/do-something-awesome\"}"
+# =&gt; {"active":true,"at":"2012-09-15T21:24:56-03:00","context":"test","id":1,"recurrency":1,"task_url":"http://myapp.com/do-something-awesome"}
 </code></pre>
 
 <p>Query for a scheduled task:</p>
 
 <pre><code>RestClient.get('http://localhost:3000/task', :params =&gt; { :context =&gt; 'test' })
-# =&gt; "{\"active\":true,\"at\":\"2012-09-15T21:24:56-03:00\",\"context\":\"test\",\"id\":1,\"recurrency\":1,\"task_url\":\"http://myapp.com/do-something-awesome\"}"
+# =&gt; {"active":true,"at":"2012-09-15T21:24:56-03:00","context":"test","id":1,"recurrency":1,"task_url":"http://myapp.com/do-something-awesome"}
 </code></pre>
 
 <p>Delete a scheduled task by query:</p>
 
 <pre><code>RestClient.delete('http://localhost:3000/task', :params =&gt; { :status_code =&gt; 404 })
-# =&gt; "{\"deleted\":3}"
+# =&gt; {"deleted":3}
 RestClient.delete('http://localhost:3000/task', :params =&gt; { :id =&gt; 9 })
-# =&gt; "{\"deleted\":1}"
+# =&gt; {"deleted":1}
 </code></pre>
 
 <p>Query for logs for tasks that already ran.</p>
 
 <pre><code>RestClient.get('http://localhost:3000/schedule/logs', :params =&gt; { :status_code =&gt; 500 })
-# =&gt; "[{\"id\":3,\"schedule_id\":1,\"started_at\":\"2012-09-15T13:38:48-03:00\",\"status_code\":500},{\"id\":5,\"schedule_id\":2,\"started_at\":\"2012-09-15T13:38:48-03:00\",\"status_code\":500}]"
+# =&gt; [{"id":3,"schedule_id":1,"started_at":"2012-09-15T13:38:48-03:00","status_code":500},{"id":5,"schedule_id":2,"started_at":"2012-09-15T13:38:48-03:00","status_code":500}]
 </code></pre>
 
 <p>Note: these examples are using <a href="https://github.com/archiloque/rest-client/">rest-client</a> and <a href="https://github.com/rails/rails/tree/master/activesupport">activesupport</a>.</p>
@@ -102,11 +88,11 @@ RestClient.delete('http://localhost:3000/task', :params =&gt; { :id =&gt; 9 })
 <p>Khronos is released under the MIT license. Please read the LICENSE file.</p>
       </section>
       <footer>
-        <p>Project maintained by <a href="https://github.com/endel">endel</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+        <p>This project is maintained by <a href="https://github.com/endel">endel</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    <script src="javascripts/scale.fix.js"></script>
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
